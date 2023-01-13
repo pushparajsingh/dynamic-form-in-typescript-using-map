@@ -36,3 +36,19 @@
     transform: rotate(360deg);
   }
 }
+.box {
+  width: 75%;
+  border-radius: 25px;
+  margin-top: 2%;
+  margin-left: 12%;
+  border: 2px solid rgb(26, 24, 24);
+  padding-bottom: 2rem;
+}
+
+.field {
+  margin-left: 17rem;
+  width: 100%;
+}
+.mgn-bottom {
+  display: block  ;
+}
