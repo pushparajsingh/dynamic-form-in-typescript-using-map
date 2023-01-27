@@ -21,10 +21,10 @@ interface Request {
 }
 
 export default function Form() {
-  const [state, setState] = useState([]);
+  const [state, setState] = useState<RootState>([]);
   const dispatch = useDispatch<AppDispatch>();
   const data: any = useSelector<RootState>((state) => state.data);
-  const [val, setVal] = useState();
+  const [val, setVal] = useState<any>();
 
   useEffect(() => {
     dispatch(getPost());
@@ -34,6 +34,14 @@ export default function Form() {
   }, [data]);
 
   // setState((event.target as HTMLInputElement).value);
+  // const onFieldChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
+  //   console.log("data", event.target as HTMLInputElement);
+  //    setState();
+  // };
+
+  const submitData = () => {
+    alert(JSON.stringify(val));
+  };
 
   return (
     <>
@@ -48,7 +56,7 @@ export default function Form() {
         >
           <div className="field">
             {state?.map(
-              ({ fieldName, type, value, options }: Request, index) => {
+              ({ fieldName, type, value, options }: Request, index: number) => {
                 return (
                   <span key={index}>
                     {fieldName == "gender" ? (
@@ -59,7 +67,10 @@ export default function Form() {
                         <RadioGroup
                           aria-labelledby="demo-controlled-radio-buttons-group"
                           name="controlled-radio-buttons-group"
-                          value={value}
+                          defaultValue={value}
+                          onChange={(event) => {
+                            setVal({ ...val, [fieldName]: event.target.value });
+                          }}
                         >
                           <FormControlLabel
                             value="female"
@@ -79,18 +90,19 @@ export default function Form() {
                         </RadioGroup>
                       </FormControl>
                     ) : (
-                      <TextField
-                        fullWidth
-                        label={fieldName}
-                        id="fullWidth"
-                        style={{ marginBottom: "4%" }}
-                        defaultValue={value}
-                        onChange={(event) => {
-                          // setVal({
-                          //   fieldName: (event.target as HTMLInputElement).value,
-                          // });
-                        }}
-                      />
+                      <>
+                        <TextField
+                          fullWidth
+                          label={fieldName}
+                          type={type}
+                          id="fullWidth"
+                          style={{ marginBottom: "4%" }}
+                          defaultValue={value}
+                          onChange={(event) => {
+                            setVal({ ...val, [fieldName]: event.target.value });
+                          }}
+                        />
+                      </>
                     )}
                   </span>
                 );
@@ -100,6 +112,7 @@ export default function Form() {
               variant="contained"
               href="#contained-buttons"
               className="mgn-bottom"
+              onClick={() => submitData()}
             >
               Submit
             </Button>
